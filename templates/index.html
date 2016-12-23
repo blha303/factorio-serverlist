@@ -1,18 +1,12 @@
 {% extends "layout.html" %}
-{% block css %}
-		<style>
-		tr {
-			cursor: pointer;
-		}
-		</style>
-{% endblock %}
 {% block body %}
-			<h1>Factorio Server List</h1>
+			<h1 class="clickable">Factorio Server List</h1>
 			<table class="table table-hover" id="list">
 				<thead>
-					<tr>
+					<tr class="clickable">
 						<th class="col-md-1"><span class="glyphicon glyphicon-lock"></span></th>
-						<th class="col-md-7">Name</th>
+						<th class="col-md-6">Name</th>
+						<th class="col-md-1">Country</th>
 						<th class="col-md-1">Players</th>
 						<th class="col-md-1">Game time</th>
 						<th class="col-md-1">Version</th>
@@ -35,10 +29,12 @@
 				$("#loading").hide();
 				$.each(data, function(i,v) {
 					$("#list").append(
-						$("<tr>", {id: v.game_id}).append(
+						$("<tr>", {class:"clickable", id: v.game_id}).append(
 							$("<td>", {html: v.has_password ? '<span class="glyphicon glyphicon-lock">' : '<span class="glyphicon glyphicon-unlock">', "data-sort-value": v.has_password ? 1 : 0})
 						).append(
 							$("<td>", {html: v.name})
+						).append(
+							$("<td>", {html: v.country ? "<img src='/flags/" + v.country + ".gif'>" : "-"})
 						).append(
 							$("<td>", {html: v.players ? "" + v.players.length + (v.max_players > 0 ? "/" + v.max_players : "") : "-", "data-sort-value":v.players ? v.players.length : "0"})
 						).append(

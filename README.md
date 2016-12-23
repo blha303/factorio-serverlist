@@ -4,6 +4,7 @@ factorio-serverlist
 Usage
 -----
 
+* Get http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz and extract it
 * Set the environment variable HOME to your user directory if it isn't already set.
 * Create a Factorio dedicated server in a directory named `factorio` in your user directory
 * Add your website username and password in data/server-settings.json

@@ -1,3 +1,4 @@
+*.mmdb
+*.sqlite
 __*
 *.pyc
-*.sqlite

@@ -15,6 +15,10 @@
 					<td>{% if d.has_password == "true" %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
 				</tr>
 				<tr>
+					<th>Country</th>
+					<td><img src="/flags/{{ d.country }}.gif"></td>
+				</tr>
+				<tr>
 					<th>Tags</th>
 					<td>{{ d.tags|join(",") }}</td>
 				</tr>
