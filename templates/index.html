@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block css %}
 		<style>
-		td {
+		tr {
 			cursor: pointer;
 		}
 		</style>
@@ -12,7 +12,8 @@
 				<thead>
 					<tr>
 						<th class="col-md-1"><span class="glyphicon glyphicon-lock"></span></th>
-						<th class="col-md-9">Name</th>
+						<th class="col-md-8">Name</th>
+						<th class="col-md-1">Game time</th>
 						<th class="col-md-1">Version</th>
 						<th class="col-md-1">Mods</th>
 					</tr>
@@ -21,26 +22,44 @@
 			<img src="https://b303.me/loading.gif" id="loading">
 {% endblock %}
 {% block js %}
+		<script src="https://b303.me/jquery.tablesorter.min.js"></script>
 		<script>
+		function formatts(minutes) {
+			h = Math.floor(minutes / 60);
+			m = minutes % 60;
+			return (h ? '' + h + "h " : '') + m + "m";
+		}
 		$(document).ready(function(){
 			$.getJSON("/api/list", function(data) {
 				$("#loading").hide();
 				$.each(data, function(i,v) {
 					$("#list").append(
 						$("<tr>", {id: v.game_id}).append(
-							$("<td>", {html: v.has_password ? '<span class="glyphicon glyphicon-lock">' : '<span class="glyphicon glyphicon-unlock">'})
+							$("<td>", {html: v.has_password ? '<span class="glyphicon glyphicon-lock">' : '<span class="glyphicon glyphicon-unlock">', "data-sort-value": v.has_password ? 1 : 0})
 						).append(
 							$("<td>", {html: v.name})
 						).append(
+							$("<td>", {html: formatts(v.game_time_elapsed), "data-sort-value":v.game_time_elapsed})
+						).append(
 							$("<td>", {html: v.application_version.game_version})
 						).append(
-							$("<td>", {html: v.mod_count > 0 ? '<span class="glyphicon glyphicon-ok">' : '<span class="glyphicon glyphicon-remove">'})
+							$("<td>", {html: v.mod_count > 0 ? '<span class="glyphicon glyphicon-ok">' : '<span class="glyphicon glyphicon-remove">', "data-sort-value": v.mod_count > 0 ? 1 : 0})
 						)
 					);
 				});
 				$("#list").on("click", "tr", function(){
 					if (this.id) {
 						window.location.href = "/info/" + this.id;
+					}
+				});
+				$("#list").tablesorter({
+					sortList: [[1,0]],
+					textExtraction: function(node) {
+						var attr = $(node).attr('data-sort-value');
+						if (typeof attr !== 'undefined' && attr !== false) {
+							return attr;
+						}
+						return $(node).text(); 
 					}
 				});
 			});

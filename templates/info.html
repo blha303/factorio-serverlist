@@ -25,11 +25,7 @@
 				<tr>
 					<th>Mods</th>
 					<td>
-						<select multiple>
-							{% for mod in d.mods %}
-							<option>{{ mod.name }} {{ mod.version }}</option>
-							{% endfor %}
-						</select>
+						{% for mod in d.mods %}<a href="/api/getmod/{{ mod.name }}/{{ mod.version }}">{{ mod.name }} {{ mod.version }}</a><br>{% endfor %}
 					</td>
 				</tr>
 			</table>
