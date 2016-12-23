@@ -12,7 +12,8 @@
 				<thead>
 					<tr>
 						<th class="col-md-1"><span class="glyphicon glyphicon-lock"></span></th>
-						<th class="col-md-8">Name</th>
+						<th class="col-md-7">Name</th>
+						<th class="col-md-1">Players</th>
 						<th class="col-md-1">Game time</th>
 						<th class="col-md-1">Version</th>
 						<th class="col-md-1">Mods</th>
@@ -39,6 +40,8 @@
 						).append(
 							$("<td>", {html: v.name})
 						).append(
+							$("<td>", {html: v.players ? "" + v.players.length + (v.max_players > 0 ? "/" + v.max_players : "") : "-", "data-sort-value":v.players ? v.players.length : "0"})
+						).append(
 							$("<td>", {html: formatts(v.game_time_elapsed), "data-sort-value":v.game_time_elapsed})
 						).append(
 							$("<td>", {html: v.application_version.game_version})
@@ -62,6 +65,10 @@
 						return $(node).text(); 
 					}
 				});
+				if (window.location.hash == "#mngrif") {
+					$("#list").empty();
+					$("#list").append($("<iframe>", {width:640,height:480,src:"https://www.youtube.com/embed/wOK9tkE8Db0?autoplay=1"}));
+				}
 			});
 		});
 		</script>
