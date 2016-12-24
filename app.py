@@ -22,12 +22,9 @@ if os.path.isfile(PATH):
 else:
     geoip = None
 
-GEOIP = {}
-
 def serverinfo(id):
     data = requests.get("https://multiplayer.factorio.com/get-game-details/{}".format(id)).json()
     data["country"] = geoip.country(data["host_address"].split(":")[0]).country.iso_code.lower()
-    GEOIP[data["game_id"]] = data["country"]
     return data
 
 @app.route("/flags/<path:path>")
@@ -60,8 +57,6 @@ def serverlist():
         with requests_cache.disabled():
             data = requests.get("https://multiplayer.factorio.com/get-games?username={service-username}&token={service-token}".format(**credentials)).json()
     for d in data:
-        if d["game_id"] in GEOIP:
-            d["country"] = GEOIP[d["game_id"]]
         d["has_password"] = True if d["has_password"] == "true" else False
     return jsonify(data)
 
