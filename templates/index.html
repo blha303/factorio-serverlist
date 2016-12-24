@@ -34,7 +34,7 @@
 						).append(
 							$("<td>", {html: v.name})
 						).append(
-							$("<td>", {html: v.country ? "<img src='/flags/" + v.country + ".gif'>" : "-"})
+							$("<td>", {html: v.country ? "<img src='/flags/" + v.country + ".gif'>" : "-", "data-sort-value": v.country ? v.country : ""})
 						).append(
 							$("<td>", {html: v.players ? "" + v.players.length + (v.max_players > 0 ? "/" + v.max_players : "") : "-", "data-sort-value":v.players ? v.players.length : "0"})
 						).append(
