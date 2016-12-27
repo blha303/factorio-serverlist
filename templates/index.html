@@ -37,7 +37,7 @@
 						).append(
 							$("<td>", {html: formatts(v.game_time_elapsed), "data-sort-value":v.game_time_elapsed})
 						).append(
-							$("<td>", {html: v.application_version ? v.application_version.game_version : "-"})
+							$("<td>", {html: v.application_version ? v.application_version.game_version : "-", "data-sort-value": v.application_version ? v.application_version.game_version.substr(2).replace(".", "") : "0"})
 						).append(
 							$("<td>", {html: v.mod_count > 0 ? '<span class="glyphicon glyphicon-ok">' : '<span class="glyphicon glyphicon-remove">', "data-sort-value": v.mod_count > 0 ? 1 : 0})
 						)

@@ -15,16 +15,19 @@ except:
     print("No user credentials. Get the multiplayer dedicated server, put it at {}/factorio, add your user account to its settings and run it once".format(environ["HOME"] if "HOME" in environ else "{user directory}"), file=sys.stderr)
     sys.exit(1)
 
-import geoip2.database
-PATH = "./GeoLite2-Country.mmdb" # http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz
-if os.path.isfile(PATH):
-    geoip = geoip2.database.Reader(PATH)
-else:
-    geoip = None
+import pygeoip
+geoip = {}
+if os.path.isfile("GeoIP.dat"):                    # http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz
+    geoip["c"] = pygeoip.GeoIP("GeoIP.dat")
+if os.path.isfile("GeoIPASNum.dat"):               # http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz
+    geoip["asn"] = pygeoip.GeoIP("GeoIPASNum.dat")
 
 def serverinfo(id):
     data = requests.get("https://multiplayer.factorio.com/get-game-details/{}".format(id)).json()
-    data["country"] = geoip.country(data["host_address"].split(":")[0]).country.iso_code.lower()
+    if "c" in geoip:
+        data["country"] = geoip["c"].country_code_by_addr(data["host_address"].split(":")[0]).lower()
+    if "asn" in geoip:
+        data["asn"] = geoip["asn"].org_by_addr(data["host_address"].split(":")[0])
     return data
 
 @app.route("/flags/<path:path>")
