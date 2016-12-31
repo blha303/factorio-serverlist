@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
 			<h1 class="clickable">Factorio Server List</h1>
-			<table class="table table-hover" id="list">
+			<span class="glyphicon glyphicon-refresh clickable" style="position:absolute;top:5px;left:5px;display:none" id="refresh"></span>
+			<table class="table table-hover">
 				<thead>
 					<tr class="clickable">
 						<th class="col-md-1"><span class="glyphicon glyphicon-lock"></span></th>
@@ -12,6 +13,8 @@
 						<th class="col-md-1">Mods</th>
 					</tr>
 				</thead>
+				<tbody id="list">
+				</tbody>
 			</table>
 			<img src="https://b303.me/loading.gif" id="loading">
 {% endblock %}
@@ -23,9 +26,13 @@
 			m = minutes % 60;
 			return (h ? '' + h + "h " : '') + m + "m";
 		}
-		$(document).ready(function(){
+		function refresh() {
+			$("#list").empty();
+			$("#loading").show();
+			$("#refresh").hide();
 			$.getJSON("/api/list", function(data) {
 				$("#loading").hide();
+				$("#refresh").show();
 				$.each(data, function(i,v) {
 					$("#list").append(
 						$("<tr>", {class:"clickable", id: v.game_id}).append(
@@ -48,7 +55,7 @@
 						window.location.href = "/info/" + this.id;
 					}
 				});
-				$("#list").tablesorter({
+				$("#list").parent().tablesorter({
 					sortList: [[1,0]],
 					textExtraction: function(node) {
 						var attr = $(node).attr('data-sort-value');
@@ -63,6 +70,10 @@
 					$("#list").append($("<iframe>", {width:640,height:480,src:"https://www.youtube.com/embed/wOK9tkE8Db0?autoplay=1"}));
 				}
 			});
+		}
+		$(document).ready(function(){
+			refresh();
+			$("#refresh").on("click", refresh);
 		});
 		</script>
 {% endblock %}
