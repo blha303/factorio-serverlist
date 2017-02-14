@@ -16,7 +16,7 @@
 				</tr>
 				<tr>
 					<th>Country</th>
-					<td><img src="/flags/{{ d.country }}.gif"> <a href="https://ipinfo.io/{{ d.asn.split(" ")[0] }}">{{ d.asn }}</a></td>
+					<td><img src="/flags/{{ d.country }}.gif"> {% if d.asn %}<a href="https://ipinfo.io/{{ d.asn.split(" ")[0] }}">{{ d.asn }}</a>{% else %}<a href="https://ipinfo.io/{{ d.host_address.split(':')[0] }}">Unknown</a>{% endif %}</td>
 				</tr>
 				<tr>
 					<th>Tags</th>
@@ -31,10 +31,22 @@
 					<td><textarea>{{ d.host_address }}</textarea></td>
 				</tr>
 				<tr>
-					<th>Mods</th>
+					<th>Mods{% if d.mods|length > 1 %} <span id="moddl" class="glyphicon glyphicon-download clickable" data-toggle="tooltip" title="Remember to enable popups for this site"></span>{% endif %}</th>
 					<td>
-						{% for mod in d.mods %}<a href="/api/getmod/{{ mod.name }}/{{ mod.version }}">{{ mod.name }} {{ mod.version }}</a><br>{% endfor %}
+						{% for mod in d.mods %}<a class="modlink" href="/api/getmod/{{ mod.name }}/{{ mod.version }}" id="{{ mod.name }}" target="_blank">{{ mod.name }} {{ mod.version }}</a><br>{% endfor %}
 					</td>
 				</tr>
 			</table>
+{% endblock %}
+{% block js %}
+			<script>
+				$(document).ready(function(){
+					$('[data-toggle="tooltip"]').tooltip();
+				});
+				$("#moddl").on("click", function(e){
+					$(".modlink").each(function(i,e){
+						if (e.id !== "base") e.click();
+					});
+				});
+			</script>
 {% endblock %}

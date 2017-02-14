@@ -36,7 +36,7 @@
 				$.each(data, function(i,v) {
 					$("#list").append(
 						$("<tr>", {class:"clickable", id: v.game_id}).append(
-							$("<td>", {html: v.has_password ? '<span class="glyphicon glyphicon-lock">' : '<span class="glyphicon glyphicon-unlock">', "data-sort-value": v.has_password ? 1 : 0})
+							$("<td>", {html: v.has_password ? '<span class="glyphicon glyphicon-lock"></span>' : '<span class="glyphicon glyphicon-unlock"></span>', "data-sort-value": v.has_password ? 1 : 0})
 						).append(
 							$("<td>", {html: v.name})
 						).append(
@@ -46,7 +46,7 @@
 						).append(
 							$("<td>", {html: v.application_version ? v.application_version.game_version : "-", "data-sort-value": v.application_version ? v.application_version.game_version.substr(2).replace(".", "") : "0"})
 						).append(
-							$("<td>", {html: v.mod_count > 0 ? '<span class="glyphicon glyphicon-ok">' : '<span class="glyphicon glyphicon-remove">', "data-sort-value": v.mod_count > 0 ? 1 : 0})
+							$("<td>", {html: v.mod_count > 0 ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>', "data-sort-value": v.mod_count > 0 ? 1 : 0})
 						)
 					);
 				});

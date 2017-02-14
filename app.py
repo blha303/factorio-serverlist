@@ -63,6 +63,10 @@ def serverlist():
         d["has_password"] = True if d["has_password"] == "true" else False
     return jsonify(data)
 
+@app.route("/dlall/<id>")
+def dlall(id):
+    return render_template("dlall.html", d=serverinfo(id))
+
 @app.route("/info/<id>")
 def info_html(id):
     data = serverinfo(id)
